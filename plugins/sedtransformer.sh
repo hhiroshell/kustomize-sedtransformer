@@ -5,22 +5,16 @@ if ! [ -x "$(command -v yq)" ]; then
   exit 1
 fi
 
-resourceList=$(cat) # read the `kind: ResourceList` from stdin
-spec=$(echo "$resourceList" | yq e '.functionConfig.spec' - )
+ # read the `kind: ResourceList` from stdin
+resourceList=$(cat)
+items=$(echo "$resourceList" | yq e '.items' - )
+replacements=$(echo "$resourceList" | yq e '.functionConfig.spec.replacements' - )
 
-i=0
-while true; do
-    resource="$(echo "$resourceList" | yq e ".items[$i]" - )"
-    if [[ "$resource" == "null" ]]; then
-        break
-    fi
-    IFS=$'\n'
-    for rep in $(echo "$spec"); do
-        key=$(echo "$rep" | cut -f 1 -d ":")
-        val=$(echo "$resourceList" | yq e ".functionConfig.spec.$key" - )
-        resource=$(echo "$resource" | sed -e "s/@@$key@@/"$val"/g")
+for i in `seq 0 $(expr $(echo "$items" | yq e ". | length" - ) - 1)`; do
+    item=$(echo "$items" | yq e ".[$i]" - )
+    for key in $(echo "$replacements" | yq e ". | keys" - | yq e ".[]" - ); do
+        item=$(echo "$item" | sed -e "s/@@$key@@/"$(echo "$replacements" | yq e ".$key" - )"/g")
     done
-    echo "$resource"
+    echo "$item"
     echo "---"
-    let i++
 done

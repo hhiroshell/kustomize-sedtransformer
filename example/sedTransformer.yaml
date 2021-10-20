@@ -1,10 +1,11 @@
 apiVersion: myDevOpsTeam
-kind: sedTransformer
+kind: SedTransformer
 metadata:
   name: sed-transformer
   annotations:
     config.kubernetes.io/function: |
-      exec: 
-        path: ../plugins/sedtransformer.sh      
+      exec:
+        path: ../plugins/sedtransformer.sh
 spec:
-  foo: bar
+  replacements:
+    foo: bar
