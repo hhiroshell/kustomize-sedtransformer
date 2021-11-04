@@ -4,5 +4,5 @@ Kustomize [Exec KRM Function](https://kubectl.docs.kubernetes.io/guides/extendin
 ## Usage
 
 ```
-$ kustomize build --enable-alpha-plugins --enable-exec ./example
+$ kustomize build --enable-alpha-plugins --enable-exec ./manifests
 ```

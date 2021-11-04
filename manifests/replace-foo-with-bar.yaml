@@ -1,7 +1,7 @@
-apiVersion: myDevOpsTeam
+apiVersion: hhiroshell.github.com
 kind: SedTransformer
 metadata:
-  name: sed-transformer
+  name: replace-foo-with-bar
   annotations:
     config.kubernetes.io/function: |
       exec:

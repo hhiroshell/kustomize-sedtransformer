@@ -7,4 +7,4 @@ configMapGenerator:
   - example.properties
 
 transformers:
-- sedTransformer.yaml
+- replace-foo-with-bar.yaml
